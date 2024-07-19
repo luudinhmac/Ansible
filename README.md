@@ -1,15 +1,15 @@
-#Install ansible
-##Run script
+# Install ansible
+## Run script
 ```sh
 chmod +x setup.sh
 ./setup.sh
 
 ```
-#Config
+# Config
 ```sh
 mkdir -p /home/mac/data/Ansible/projects; cd /home/mac/data/Ansible/projects
 ```
-##Config inventory
+## Config inventory
 ```sh
 vi inventory.ini
 ```
@@ -21,7 +21,7 @@ target1 ansible_ssh_host=10.0.0.3
 target1
 ```
 
-###Create ssh-keygen
+### Create ssh-keygen
 ```sh
 ssh-keygen -t rsa    #create ssh-keygen
 ssh-copy-id root@10.0.0.3   #copy ssh to remote server
