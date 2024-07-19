@@ -1,0 +1,7 @@
+---
+- hosts: dbservers #using host was define in inventory file
+  become: true # running with root permission
+
+  roles:
+    - postgresql # role was created
+

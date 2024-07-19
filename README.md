@@ -28,5 +28,3 @@ ssh-copy-id root@10.0.0.3   #copy ssh to remote server
 ```
 
 ## Install postgresql using ansible
- 
-
