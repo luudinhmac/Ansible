@@ -1,0 +1,8 @@
+---
+# Handlers for SSL role
+
+- name: Restart Nginx
+  systemd:
+    name: nginx
+    state: restarted
+

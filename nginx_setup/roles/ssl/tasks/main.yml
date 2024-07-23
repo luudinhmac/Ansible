@@ -1,0 +1,37 @@
+- name: Install openssl
+  apt:
+    name: openssl
+    state: present
+- name: Create SSL directory
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+- name: Generate self-signed  SSL certificate
+  command: >
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048
+    -keyout /etc/nginx/ssl/server.key
+    -out /etc/nginx/ssl/server.crt
+    -subj "/C=VN/ST=HCM/L=HCM/O=Organization/OU=IT/CN=vmware.local"
+  args:
+    creates: /etc/nginx/ssl/server.crt
+- name: Set permissions for SSL files
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: '0600'
+  with_items:
+    - /etc/nginx/ssl/server.crt
+    - /etc/nginx/ssl/server.key
+- name: Update conf nginx file
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/default
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart Nginx

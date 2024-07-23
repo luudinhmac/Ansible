@@ -1,0 +1,44 @@
+---
+# tasks file for roles/nginx
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Ensure Nginx Started and Enabled
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+    - name: Create file config Nginx
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-enabled/default
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+        - Restart Nginx
+    - name: Ensure Nginx running
+      systemd:
+        name: nginx
+        state: started
+    - name: Copy Index Home Pages
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Ensure correct ownership and permission of file index.html
+      file:
+        path: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
