@@ -27,4 +27,15 @@ ssh-keygen -t rsa    #create ssh-keygen
 ssh-copy-id root@10.0.0.3   #copy ssh to remote server
 ```
 
+### Make ansible running without passphare idrsa
+```sh
+ssh-agent add
+ssh-add ~/.ssh/id_rsa
+ssh-add -l
+ssh-add -L
+
+```
+
+
 ## Install postgresql using ansible
+
