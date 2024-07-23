@@ -11,12 +11,12 @@
     mode: '0700'
 - name: Generate self-signed  SSL certificate
   command: >
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048
-    -keyout /etc/nginx/ssl/server.key
-    -out /etc/nginx/ssl/server.crt
-    -subj "/C=VN/ST=HCM/L=HCM/O=Organization/OU=IT/CN=vmware.local"
+    openssl req -x509 -nodes -days {{ ssl_cert_days }} -newkey rsa:{{ ssl_cert_key_size }}
+    -keyout {{ ssl_key_path }}
+    -out {{ ssl_cert_path }}
+    -subj "{{ ssl_cert_subject }}"
   args:
-    creates: /etc/nginx/ssl/server.crt
+    creates: "{{ ssl_cert_path }}"
 - name: Set permissions for SSL files
   file:
     path: "{{ item }}"
@@ -24,8 +24,8 @@
     group: root
     mode: '0600'
   with_items:
-    - /etc/nginx/ssl/server.crt
-    - /etc/nginx/ssl/server.key
+    - "{{ ssl_cert_path }}"
+    - "{{ ssl_key_path }}"
 - name: Update conf nginx file
   template:
     src: templates/nginx.conf.j2

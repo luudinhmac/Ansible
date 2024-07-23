@@ -1,0 +1,6 @@
+---
+ssl_cert_days: 365
+ssl_cert_key_size: 2048
+ssl_cert_subject: "/C=VN/ST=HCM/L=HCM/O=IT/OU=IT/CN=*.vmware.local"
+ssl_cert_path: "/etc/nginx/ssl/server.crt"
+ssl_key_path: "/etc/nginx/ssl/server.key"
