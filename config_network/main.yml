@@ -1,0 +1,30 @@
+- name: Config nework for servers
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Ensure Netplan Configuration directory exists
+      file: 
+        path: /etc/netplan
+        state: directory
+    - name: Backup old config Network
+      #command: mv /etc/netplan/* /etc/netplan/01-netcfg.yaml.old
+      command: find /etc/netplan -name "*.yml" -exec mv {} ansible/network.yml.old \;
+      ignore_errors: yes # invoice error if no file exists
+    - name: Config Netplan Network Interfaces
+      copy:
+        dest: /etc/netplan/01-netcfg.yaml
+        content: |
+          network:
+            version: 2
+            ethernets:
+              ens33:
+                addresses:
+                  - {{ new_ip }}/24
+                gateway4: {{ gateway }}
+                nameservers:
+                  addresses:
+                    - 8.8.8.8
+                    - 10.0.0.1
+                optional: true
+    - name: Apply Netplan
+      command: netplan apply
